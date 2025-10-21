@@ -21,9 +21,13 @@ db.sqlite3-journal
 # IDEs
 .vscode/
 .idea/
+.cursor/
+.windsurf/
 *.swp
 *.swo
 *~
+.gitconfig
+.lesshst
 
 # OS
 .DS_Store
