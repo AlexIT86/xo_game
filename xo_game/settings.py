@@ -120,14 +120,18 @@ REDIS_URL = os.environ.get('REDIS_URL', None)
 
 if REDIS_URL:
     # Producție cu Redis (Render.com)
+    # Channels-redis acceptă URL complet ca string
     CHANNEL_LAYERS = {
         'default': {
             'BACKEND': 'channels_redis.core.RedisChannelLayer',
             'CONFIG': {
                 "hosts": [REDIS_URL],
+                "capacity": 1500,
+                "expiry": 10,
             },
         },
     }
+    print(f"[INFO] Using Redis for Channel Layers: {REDIS_URL[:20]}...")
 else:
     # Dezvoltare locală cu InMemory
     CHANNEL_LAYERS = {
@@ -135,3 +139,4 @@ else:
             'BACKEND': 'channels.layers.InMemoryChannelLayer'
         }
     }
+    print("[INFO] Using InMemory Channel Layer (local development)")
