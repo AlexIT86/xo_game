@@ -1,0 +1,115 @@
+<!DOCTYPE html>
+<html lang="ro">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Joc X și 0 - Camera {{ room_code }}</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    {% load static %}
+    <link rel="stylesheet" href="{% static 'css/style.css' %}">
+</head>
+<body class="game-page">
+    <div class="background-gradient"></div>
+    
+    <!-- Confetti pentru victorie -->
+    <canvas id="confetti-canvas"></canvas>
+    
+    <div class="container">
+        <!-- Header cu informații -->
+        <div class="game-header fade-in">
+            <div class="room-info">
+                <div class="room-code-display">
+                    <span class="label">Codul Camerei:</span>
+                    <span class="code pulse" id="roomCode">{{ room_code }}</span>
+                    <button class="copy-btn" onclick="copyRoomCode()" title="Copiază codul">
+                        <svg width="20" height="20" viewBox="0 0 20 20" fill="none">
+                            <path d="M13 0H2C.9 0 0 .9 0 2v12h2V2h11V0zm3 4H6c-1.1 0-2 .9-2 2v12c0 1.1.9 2 2 2h10c1.1 0 2-.9 2-2V6c0-1.1-.9-2-2-2zm0 14H6V6h10v12z" fill="currentColor"/>
+                        </svg>
+                    </button>
+                </div>
+                <button class="btn-home" onclick="window.location.href='{% url 'index' %}'" title="Înapoi la meniu">
+                    <svg width="20" height="20" viewBox="0 0 20 20" fill="none">
+                        <path d="M10 2L2 8v10h6v-6h4v6h6V8l-8-6z" fill="currentColor"/>
+                    </svg>
+                </button>
+            </div>
+            
+            <!-- Scor -->
+            <div class="scoreboard fade-in-up">
+                <div class="score-item">
+                    <div class="score-symbol x-symbol">X</div>
+                    <div class="score-value" id="scoreX">0</div>
+                    <div class="score-label">Victorii X</div>
+                </div>
+                <div class="score-item">
+                    <div class="score-symbol draw-symbol">═</div>
+                    <div class="score-value" id="scoreDraws">0</div>
+                    <div class="score-label">Remize</div>
+                </div>
+                <div class="score-item">
+                    <div class="score-symbol o-symbol">O</div>
+                    <div class="score-value" id="scoreO">0</div>
+                    <div class="score-label">Victorii O</div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Card de Joc -->
+        <div class="game-card fade-in-up">
+            <!-- Status Joc -->
+            <div class="game-status" id="gameStatus">
+                <div class="status-icon">
+                    <div class="spinner"></div>
+                </div>
+                <p class="status-text">Conectare...</p>
+            </div>
+
+            <!-- Player Badge -->
+            <div class="player-badge" id="playerBadge" style="display: none;">
+                <span>Tu ești:</span>
+                <span class="badge-symbol" id="playerSymbol"></span>
+            </div>
+
+            <!-- Tabla de Joc -->
+            <div class="game-board" id="gameBoard">
+                <div class="board-cell" data-index="0"></div>
+                <div class="board-cell" data-index="1"></div>
+                <div class="board-cell" data-index="2"></div>
+                <div class="board-cell" data-index="3"></div>
+                <div class="board-cell" data-index="4"></div>
+                <div class="board-cell" data-index="5"></div>
+                <div class="board-cell" data-index="6"></div>
+                <div class="board-cell" data-index="7"></div>
+                <div class="board-cell" data-index="8"></div>
+                <svg class="winning-line" id="winningLine" style="display: none;">
+                    <line x1="0" y1="0" x2="0" y2="0" stroke="var(--accent-color)" stroke-width="8" stroke-linecap="round"/>
+                </svg>
+            </div>
+
+            <!-- Butoane Acțiuni -->
+            <div class="game-actions">
+                <button class="btn btn-restart" id="restartBtn" onclick="restartGame()" style="display: none;">
+                    <svg width="20" height="20" viewBox="0 0 20 20" fill="none">
+                        <path d="M10 2v4l3-3-3-3zm0 0C5.58 2 2 5.58 2 10s3.58 8 8 8 8-3.58 8-8" stroke="currentColor" stroke-width="2" fill="none"/>
+                    </svg>
+                    <span>Joc Nou</span>
+                </button>
+            </div>
+        </div>
+
+        <!-- Notificări Toast -->
+        <div class="toast-container" id="toastContainer"></div>
+    </div>
+
+    <script>
+        // Variabile globale
+        const roomCode = "{{ room_code }}";
+        let socket = null;
+        let myPlayer = null;
+        let gameState = null;
+    </script>
+    <script src="{% static 'js/game.js' %}"></script>
+</body>
+</html>

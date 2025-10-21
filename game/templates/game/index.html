@@ -1,0 +1,124 @@
+<!DOCTYPE html>
+<html lang="ro">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>X și 0 - Joc Multiplayer</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    {% load static %}
+    <link rel="stylesheet" href="{% static 'css/style.css' %}">
+</head>
+<body>
+    <div class="background-gradient"></div>
+    
+    <div class="container">
+        <!-- Logo și Titlu -->
+        <div class="logo-container fade-in">
+            <div class="logo-symbols">
+                <span class="logo-x">X</span>
+                <span class="logo-divider">și</span>
+                <span class="logo-o">0</span>
+            </div>
+            <h1 class="title">Joc Multiplayer</h1>
+            <p class="subtitle">Joacă X și 0 în timp real cu prietenii tăi</p>
+        </div>
+
+        <!-- Card Principal -->
+        <div class="card main-card fade-in-up">
+            <!-- Mesaj de eroare dacă există -->
+            {% if error %}
+            <div class="error-message shake">
+                <svg width="20" height="20" viewBox="0 0 20 20" fill="none">
+                    <path d="M10 0C4.48 0 0 4.48 0 10s4.48 10 10 10 10-4.48 10-10S15.52 0 10 0zm1 15H9v-2h2v2zm0-4H9V5h2v6z" fill="currentColor"/>
+                </svg>
+                <span>{{ error }}</span>
+            </div>
+            {% endif %}
+
+            <!-- Butoane Principale -->
+            <div class="button-group">
+                <form method="POST" action="{% url 'create_room' %}">
+                    {% csrf_token %}
+                    <button type="submit" class="btn btn-primary btn-large">
+                        <svg width="24" height="24" viewBox="0 0 24 24" fill="none">
+                            <path d="M12 5v14m7-7H5" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
+                        </svg>
+                        <span>Creează Cameră Nouă</span>
+                    </button>
+                </form>
+
+                <div class="divider">
+                    <span>sau</span>
+                </div>
+
+                <form method="POST" action="{% url 'join_room' %}" id="joinForm">
+                    {% csrf_token %}
+                    <div class="input-group">
+                        <label for="room_code">Intră folosind cod</label>
+                        <input 
+                            type="text" 
+                            id="room_code" 
+                            name="room_code" 
+                            placeholder="Introdu codul de 6 caractere" 
+                            maxlength="6"
+                            required
+                            autocomplete="off"
+                        >
+                    </div>
+                    <button type="submit" class="btn btn-secondary btn-large">
+                        <svg width="24" height="24" viewBox="0 0 24 24" fill="none">
+                            <path d="M15 3h6v6M9 21H3v-6M21 3l-7 7M3 21l7-7" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                        </svg>
+                        <span>Intră în Cameră</span>
+                    </button>
+                </form>
+            </div>
+        </div>
+
+        <!-- Informații -->
+        <div class="info-cards fade-in-up">
+            <div class="info-card">
+                <div class="info-icon">👥</div>
+                <h3>2 Jucători</h3>
+                <p>Joacă cu un prieten în timp real</p>
+            </div>
+            <div class="info-card">
+                <div class="info-icon">⚡</div>
+                <h3>Instant</h3>
+                <p>Conexiune WebSocket rapidă</p>
+            </div>
+            <div class="info-card">
+                <div class="info-icon">🏆</div>
+                <h3>Scor Live</h3>
+                <p>Urmărește victoriile tale</p>
+            </div>
+        </div>
+
+        <!-- Footer -->
+        <div class="footer fade-in">
+            <p>Creat cu ❤️ folosind Django & Channels</p>
+        </div>
+    </div>
+
+    <script>
+        // Auto-uppercase pentru codul camerei
+        const roomCodeInput = document.getElementById('room_code');
+        if (roomCodeInput) {
+            roomCodeInput.addEventListener('input', function(e) {
+                this.value = this.value.toUpperCase();
+            });
+        }
+
+        // Animație la submit
+        const forms = document.querySelectorAll('form');
+        forms.forEach(form => {
+            form.addEventListener('submit', function(e) {
+                const btn = this.querySelector('button[type="submit"]');
+                btn.classList.add('loading');
+            });
+        });
+    </script>
+</body>
+</html>
