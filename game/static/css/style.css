@@ -637,6 +637,7 @@ body {
 
 .board-cell.active {
     animation: cellPulse 2s ease-in-out infinite;
+    cursor: pointer !important;
 }
 
 .board-cell .symbol {

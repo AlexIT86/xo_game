@@ -278,8 +278,13 @@ function restartGame() {
         
         showToast('Joc nou început!', 'info');
         
-        // Șterge linia câștigătoare
+        // Șterge linia câștigătoare cu resetare completă
         const winningLine = document.getElementById('winningLine');
+        const line = winningLine.querySelector('line');
+        
+        // Resetează animația (reaplic stroke-dashoffset)
+        line.style.animation = 'none';
+        line.style.strokeDashoffset = '1000';
         winningLine.style.display = 'none';
         
         // Oprește confetti dacă e activ
