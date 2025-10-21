@@ -8,6 +8,8 @@ pip install -r requirements.txt
 # Colectează static files
 python manage.py collectstatic --no-input
 
-# Rulează migrările
+# Rulează migrările (SQLite)
 python manage.py migrate
+
+echo "Build completed successfully!"
 
