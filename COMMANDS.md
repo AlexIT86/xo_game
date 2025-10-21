@@ -387,3 +387,4 @@ python manage.py loaddata backup.json
 
 **Pro Tip:** Salvează acest fișier și folosește-l ca referință rapidă! 🚀
 
+

@@ -35,3 +35,4 @@ echo "========================================"
 echo ""
 python manage.py runserver
 
+
