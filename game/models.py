@@ -7,6 +7,11 @@ import string
 from django.db import models
 
 
+def default_board():
+    """Returnează o tablă goală cu 9 celule."""
+    return [''] * 9
+
+
 class GameRoom(models.Model):
     """
     Model pentru o cameră de joc.
@@ -20,7 +25,7 @@ class GameRoom(models.Model):
     player_o = models.CharField(max_length=255, blank=True, null=True)
     
     # Starea tablei (stocată ca JSON: listă de 9 elemente: '', 'X', sau 'O')
-    board = models.JSONField(default=list)
+    board = models.JSONField(default=default_board)
     
     # Cine are tura: 'X' sau 'O'
     current_turn = models.CharField(max_length=1, default='X')
@@ -142,6 +147,10 @@ class GameRoom(models.Model):
         Returns:
             list: Lista de poziții câștigătoare sau None
         """
+        # Verificare de siguranță: board trebuie să aibă 9 elemente
+        if not self.board or len(self.board) != 9:
+            return None
+            
         winning_combinations = [
             [0, 1, 2],
             [3, 4, 5],
